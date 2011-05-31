@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #ffffe8;
+    color: #5e2b27;
+    margin: 50px;
+}
+
+body, input, textarea {
+    font: 20px/24px "Lucida Grande";
+}
+
+fieldset {
+    width: 820px;
+    padding: 20px;
+    margin: 20px;
+    border: 3px #efefd8 dashed;
+    border-radius: 10px;
+}
+
+legend {
+    font-size: 1.6em;
+    font-weight: bold;
+    padding: 0 10px;
+    margin: 0 0 0 80px;
+}
+
+label {
+    width: 80px;
+    line-height: 1.4em;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    margin-right: 10px;
+}
+
+label.textarea {
+    vertical-align: top;
+}
+
+input[type=text],
+textarea {
+    border: 2px inset;
+    width: 720px;
+    vertical-align: middle;
+}
+
+input[type=checkbox] {
+    vertical-align: middle;
+    margin-left: 90px;
+    margin-right: 10px;
+}
+
+.buttons {
+    margin-top: 10px;
+    float: right;
+    display: inline-block;
+}
+
+input.submit {
+    width: auto;
+    padding: 0 15px;
+}
+
+.buttons span {
+    padding: 0 10px 0 5px;
+}
+
+a:before, a:after {
+    display: inline-block;
+    padding: 0 3px;
+    color: #dd0909;
+}
+
+a:before {
+    content: "[";
+}
+
+a:after {
+    content: "]";
+}
+
+a,
+a:visited {
+    color: inherit;
+    padding: 3px 3px 5px 3px;
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: #FFE992;
+}
+
+a:active {
+    color: #dd0909;
+}
+
+ul {
+    list-style: none;
+}
+
+#messages {
+    padding: 10px 0;
+    clear: both;
+}
+
+#messages li {
+    border-bottom: 3px #efefd8 dashed;
+    padding: 10px 0 20px 0;
+    height: 1em;
+}
+
+#messages li:first-child {
+    border-top: 3px #efefd8 dashed;
+}
+
+h1 {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin: 30px 0;
+}
+
+h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+#newMsg,
+a.navr {
+    float: right;
+}
+
+a.navl {
+    float: left;
+}
+
+a.disabled {
+    display: none;
+}

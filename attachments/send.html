@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Send a message</title>
+    <link href="layout.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<form id="sendMessage" action="see-javascript">
+    <input id="type" type="hidden" name="type" value="message">
+    <input id="from" type="hidden" name="from" value="me@local">
+    <fieldset>
+        <legend>Send a message</legend>
+        <label for="to">To</label><input type="text" name="to" id="to"><br>
+        <label for="cc">Cc</label><input type="text" name="cc" id="cc"><br>
+        <label for="subject">Subject</label><input type="text" name="subject" id="subject"><br>
+        <input type="checkbox" name="confidential" id="confidential"><label class="checkbox" for="confidential">Confidential?</label><br>
+        <label class="textarea" for="message">Message</label><textarea cols="80" rows="25" name="message"
+                                                                       id="message"></textarea><br>
+
+        <div class="buttons"><a href="index.html">Cancel</a><span>or</span><input class="submit" type="submit"
+                                                                                  value="Send" id="send"></div>
+    </fieldset>
+</form>
+<script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="underscore.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript">
+    function recipients(value) {
+        var r = value ? value.split(/[,;]/) : [];
+        return _(r)
+                .chain()
+                .map(function(it) {
+                    return it.trim();
+                })
+                .select(function(it) {
+                    return !!it;
+                })
+                .value();
+    }
+    $('#send').click(function(event) {
+        var message = $('#sendMessage').serializeObject();
+        message.confidential = !!message.confidential;
+        message.to = recipients(message.to);
+        message.cc = recipients(message.cc);
+        request({url: '/_uuids', type: 'GET'}, function (err, obj) {
+            var uuid = obj.uuids[0];
+            request({url: '../../' + uuid, data: message, type: 'PUT'}, function() {
+                window.location = 'index.html';
+            });
+        });
+        event.preventDefault();
+    });
+</script>
+</body>
+</html>

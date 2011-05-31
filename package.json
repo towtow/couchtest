@@ -1,0 +1,8 @@
+{
+    "name"          : "couchtest",
+    "description"   : "Playing around with CouchDB",
+    "homepage"      : "http://localhost/",
+    "author"        : "Tobias Wildgruber <tow@conject.com>",
+    "dependencies"  : { "couchapp": "", "jade": "", "underscore": "" },
+    "version"       : "0.0.1"
+}
