@@ -3,7 +3,7 @@ var http = require('http'),
         cu = require('./lib/couch-utils');
 
 const DOC_TYPES = [ 'Foo', 'Far', 'Fur', 'Bar', 'Baz', 'Biz' ];
-const NUM_DOCS = 100;
+const NUM_DOCS = 1000;
 
 //cu.options.logging = true;
 
@@ -39,5 +39,20 @@ function chain(fun, arg) {
     }
 }
 
+function createTestMessage(idx) {
+    return { type: "message", from: "me@local", to: [ "nlj", "pn" ], cc: [ "ck", "astu" ], subject: "Teschding " + idx, message: "empty", confidential: false };
+}
+
+
+function createSomeMessages() {
+    cu.withNewIds(10000, function(uuids) {
+        _(uuids).each(function(uuid, idx) {
+            cu.request('PUT', '/couchtest/' + uuid, { body: createTestMessage(idx) });
+        });
+    });
+}
+
+
 //chain(deleteDB, chain(createDB, createTestData))();
-createTestData();
+//createTestData();
+createSomeMessages();

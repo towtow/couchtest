@@ -23,7 +23,7 @@ var ddoc = {
         msg: {
             map: function(doc) {
                 if (doc.type === 'message') {
-                    emit(doc.type, doc);
+                    emit(doc._id, doc);
                 }
             },
             reduce: function(keys, values, combine) {
@@ -37,7 +37,7 @@ var ddoc = {
         count: {
             map: function(doc) {
                 if (doc.type) {
-                    emit([doc.type, parseInt(doc.num / 100) * 100, parseInt(doc.num % 12)]);
+                    emit([doc.type, parseInt(doc.num / 100) * 100, parseInt(doc.num % 10)]);
                 }
             },
             reduce: function(keys, values, combine) {
@@ -51,27 +51,19 @@ var ddoc = {
     },
     shows: {
         ui: function(doc, req) {
-            var ddoc = this, jade = require('lib/jade'), _ = require('lib/underscore');
-//            var context = doc || ddoc.default_context;
-//            var template = (doc && doc.template) || ddoc.template;
-//            // For some reason templates want a final line with a token in the first column.
-//            template += "\n// end";
-//            var result = jade.render(template, { debug: true, locals: context, filename: "jade-template" });
-            var result = "";
-            for (var p in jade) {
-                result += p + "<br>"
-            }
-//            var result = jade.toString();
+            var _ = require('lib/underscore');
+            var context = doc || this.default_context;
+            var template = (doc && doc.template) || this.template;
+            // For some reason templates want a final line with a token in the first column.
+            template += "\n// end";
+            var result = jade.render(template, { debug: true, locals: context, filename: "jade-template" });
             return { code: 200, headers: { "Content-Type": "text/html" }, body: result };
         }
     },
     lib: {
-        underscore: includeLib('node_modules/underscore/underscore.js'),
-        jade: includeLib('node_modules/jade/jade.js')
+        underscore: includeLib('node_modules/underscore/underscore.js')
     },
-    fs: "exports.version = '0';",
-    sys: "exports.puts = log; exports.inspect = function(x) { return x.toString() };",
-    template: "!!! 5\nhtml\n  body\n    h1= title\n    div(style: style)\n      p #{message}\n    hr(width: '75%')\n  // body",
+    template: "!!! 5\nhtml\n  body\n    h1= title",
     default_context: {
         style: "font-style: italic; font-size: 115%",
         message: "Welcome to <a href='http://github.com/jhs/jade-couchdb'>Jade CouchDB</a>! How simple was that? Try <a href='./ui/red'>red Jade</a> too.",
