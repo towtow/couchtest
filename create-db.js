@@ -3,7 +3,7 @@ var http = require('http'),
         cu = require('./lib/couch-utils');
 
 const DOC_TYPES = [ 'Foo', 'Far', 'Fur', 'Bar', 'Baz', 'Biz' ];
-const NUM_DOCS = 1000;
+const NUM_DOCS = 100;
 
 //cu.options.logging = true;
 
