@@ -1,8 +1,10 @@
 var couchapp = require('couchapp'),
-        path = require('path');
+        path = require('path'),
+        fs = require('fs'),
+        cu = require('./lib/couch-utils');
 
 function includeLib(relPath) {
-    return require('fs').readFileSync(path.join(__dirname, relPath), 'utf8');
+    return fs.readFileSync(path.join(__dirname, relPath), 'utf8');
 }
 
 var ddoc = {
@@ -51,7 +53,7 @@ var ddoc = {
     },
     shows: {
         ui: function(doc, req) {
-            var _ = require('lib/underscore');
+            var jade = require('jade');
             var context = doc || this.default_context;
             var template = (doc && doc.template) || this.template;
             // For some reason templates want a final line with a token in the first column.
@@ -60,9 +62,7 @@ var ddoc = {
             return { code: 200, headers: { "Content-Type": "text/html" }, body: result };
         }
     },
-    lib: {
-        underscore: includeLib('node_modules/underscore/underscore.js')
-    },
+    underscore: includeLib('node_modules/underscore/underscore.js'),
     template: "!!! 5\nhtml\n  body\n    h1= title",
     default_context: {
         style: "font-style: italic; font-size: 115%",
@@ -70,6 +70,8 @@ var ddoc = {
         title: "Jade CouchDB"
     }
 };
+
+cu.includeLib('jade', ddoc);
 
 couchapp.loadAttachments(ddoc, path.join(__dirname, 'attachments'));
 
