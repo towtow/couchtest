@@ -6,6 +6,7 @@ const DOC_TYPES = [ 'Foo', 'Far', 'Fur', 'Bar', 'Baz', 'Biz' ];
 const NUM_DOCS = 1000;
 
 //cu.options.logging = true;
+cu.options.host = 'hadoop.ref.dc.local';
 
 function deleteDB(cont) {
     cu.request('DELETE', '/couchtest', { withResultDo: cont, ignoreFail: true })
@@ -40,16 +41,23 @@ function chain(fun, arg) {
 }
 
 function createTestMessage(idx) {
-    return { type: "message", from: "me@local", to: [ "nlj", "pn" ], cc: [ "ck", "astu" ], subject: "Teschding " + idx, message: "empty", confidential: false };
+    return {
+        timestamp: new Date().getTime(),
+        type: "message",
+        from: "me@local",
+        to: [ "nlj", "pn" ],
+        cc: [ "ck", "astu" ],
+        subject: "Teschding " + idx, message: "empty",
+        confidential: false };
 }
 
 
 function createSomeMessages() {
-    cu.withNewIds(10000, function(uuids) {
-        _(uuids).each(function(uuid, idx) {
-            cu.request('PUT', '/couchtest/' + uuid, { body: createTestMessage(idx) });
-        });
-    });
+    var count = 1000;
+    while (count) {
+        cu.request('POST', '/couchtest', { body: createTestMessage(count) });
+        count -= 1;
+    }
 }
 
 

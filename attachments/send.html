@@ -43,11 +43,9 @@
         message.confidential = !!message.confidential;
         message.to = recipients(message.to);
         message.cc = recipients(message.cc);
-        request({url: '/_uuids', type: 'GET'}, function (err, obj) {
-            var uuid = obj.uuids[0];
-            request({url: '../../' + uuid, data: message, type: 'PUT'}, function() {
-                window.location = 'index.html';
-            });
+        message.timestamp = new Date().getTime();
+        request({url: '../..', data: message, type: 'POST'}, function() {
+            window.location = 'index.html';
         });
         event.preventDefault();
     });

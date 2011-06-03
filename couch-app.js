@@ -3,6 +3,9 @@ var couchapp = require('couchapp'),
         fs = require('fs'),
         cu = require('./lib/couch-utils');
 
+//cu.options.logging = true;
+cu.options.host = 'hadoop.ref.dc.local';
+
 function includeLib(relPath) {
     return fs.readFileSync(path.join(__dirname, relPath), 'utf8');
 }
@@ -25,7 +28,9 @@ var ddoc = {
         msg: {
             map: function(doc) {
                 if (doc.type === 'message') {
-                    emit(doc._id, doc);
+                    var ts = '00000000000000000000' + (doc.timestamp || 0);
+                    ts = ts.substring(ts.length - 20);
+                    emit(ts, doc);
                 }
             },
             reduce: function(keys, values, combine) {
@@ -75,6 +80,6 @@ cu.includeLib('jade', ddoc);
 
 couchapp.loadAttachments(ddoc, path.join(__dirname, 'attachments'));
 
-couchapp.createApp(ddoc, 'http://localhost:5984/couchtest', function (app) {
+couchapp.createApp(ddoc, 'http://hadoop.ref.dc.local:5984/couchtest', function (app) {
     app.push();
 });
